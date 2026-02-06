@@ -2,48 +2,50 @@
 Transaction schemas for financial transactions.
 """
 
-from datetime import datetime, date
+from datetime import datetime
+from datetime import date as date_type
 from decimal import Decimal
+from typing import Optional
 from pydantic import BaseModel
 
 
 class TransactionCreate(BaseModel):
     """Schema for creating a new transaction."""
     account_id: int
-    date: date
+    date: date_type
     description: str
     amount: Decimal
-    category_id: int | None = None
+    category_id: Optional[int] = None
     is_income: bool = False
-    merchant: str | None = None
-    notes: str | None = None
+    merchant: Optional[str] = None
+    notes: Optional[str] = None
 
 
 class TransactionUpdate(BaseModel):
     """Schema for updating a transaction."""
-    date: date | None = None
-    description: str | None = None
-    amount: Decimal | None = None
-    category_id: int | None = None
-    is_income: bool | None = None
-    merchant: str | None = None
-    notes: str | None = None
+    date: Optional[date_type] = None
+    description: Optional[str] = None
+    amount: Optional[Decimal] = None
+    category_id: Optional[int] = None
+    is_income: Optional[bool] = None
+    merchant: Optional[str] = None
+    notes: Optional[str] = None
 
 
 class TransactionResponse(BaseModel):
     """Schema for transaction response data."""
     id: int
     account_id: int
-    category_id: int | None
-    date: date
+    category_id: Optional[int]
+    date: date_type
     description: str
     amount: Decimal
     is_income: bool
-    merchant: str | None
-    notes: str | None
-    import_hash: str | None
+    merchant: Optional[str]
+    notes: Optional[str]
+    import_hash: Optional[str]
     created_at: datetime
-    category_name: str | None = None  # Populated from join
+    category_name: Optional[str] = None  # Populated from join
 
     class Config:
         from_attributes = True
@@ -51,7 +53,7 @@ class TransactionResponse(BaseModel):
 
 class TransactionImport(BaseModel):
     """Schema for importing transactions from file."""
-    date: date
+    date: date_type
     description: str
     amount: Decimal
     is_income: bool = False
